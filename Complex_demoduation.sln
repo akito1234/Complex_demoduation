@@ -5,6 +5,8 @@ VisualStudioVersion = 15.0.28307.438
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{888888A0-9F3D-457C-B088-3A5042F75D52}") = "Complex_demoduation", "Complex_demoduation\Complex_demoduation.pyproj", "{7D380A5B-BE9B-4AC9-B8F9-002D763D82BD}"
 EndProject
+Project("{888888A0-9F3D-457C-B088-3A5042F75D52}") = "FFT_analysis", "FFT_analysis\FFT_analysis.pyproj", "{65D3EAC0-3015-45B0-A45F-4268AF5F5C57}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -13,6 +15,8 @@ Global
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
 		{7D380A5B-BE9B-4AC9-B8F9-002D763D82BD}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{7D380A5B-BE9B-4AC9-B8F9-002D763D82BD}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{65D3EAC0-3015-45B0-A45F-4268AF5F5C57}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{65D3EAC0-3015-45B0-A45F-4268AF5F5C57}.Release|Any CPU.ActiveCfg = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
