@@ -99,28 +99,34 @@ class PSD:
         #-------------------LF-------------------------#
         # 低周波領域
         # 元波形をコピーする
-        LFA = F.copy()
-        LFA[((freq < 0.04)|(freq > 0.15))] = 0 + 0j
+        LF = F.copy()
+        LF[((freq < 0.04)|(freq > 0.15))] = 0 + 0j
+        Amp_LF = np.abs(LF)
+        Pow_LF = Amp_LF ** 2
         # パワースペクトルの計算（振幅スペクトルの二乗）
         # 高速逆フーリエ変換
-        lfa = np.fft.ifft(LFA)
+        lf = np.fft.ifft(LF)
 
         # 実部の値のみ取り出し
-        lfa = lfa.real
+        lf = lf.real
+        LFA =  np.abs(lf)
 
         #-------------------HF------------------------#
         # 高周波領域
         # 元波形をコピーする
-        HFA = F.copy()
+        HF = F.copy()
         freq = np.linspace(0, resamp_frequency, N) # 周波数軸
         # ローパスフィル処理（カットオフ周波数を超える帯域の周波数信号を0にする）
-        HFA[((freq < 0.15)|(freq > 0.40))] = 0 + 0j
+        HF[((freq < 0.15)|(freq > 0.40))] = 0 + 0j
+
+        Amp_HF = np.abs(HF)
+        Pow_HF = Amp_HF ** 2
         # パワースペクトルの計算（振幅スペクトルの二乗）
         # 高速逆フーリエ変換
-        hfa = np.fft.ifft(HFA)
+        hf = np.fft.ifft(HF)
         # 実部の値のみ取り出し
-        hfa = hfa.real
-        
+        hf = hf.real
+        HFA =  np.abs(hf)
 
         #---------------パワースペクトルを計算-------------------#
         # PSDを出力する
@@ -142,7 +148,7 @@ class PSD:
         #psd   ???
         LF_y0=np.r_[inter_PSD(np.array([0.04])),P1[LF_i:LF_iend]]
         LF_y=np.r_[LF_y0,inter_PSD(np.array([LF_right]))]
-        LF=integrate.simps(LF_y,LF_x)*1.0e6
+        LF_psd=integrate.simps(LF_y,LF_x)*1.0e6
 
 
         
@@ -165,24 +171,45 @@ class PSD:
 
 
 
-        fig, axs = plt.subplots(3, 2, figsize=(12, 8))
+        fig, axs = plt.subplots(3, 3, figsize=(12, 8))
         # 左上
-        axs[0,0].plot(resamp_series, hfa , "b")
-        axs[0,1].plot(freq, Pow, "b")
-        axs[0,1].set_ylim(0,50)
-        # 右上
-        axs[1,0].plot(resamp_series, lfa , "b")
-        
-        axs[1,1].plot(freq, LFA, "b")
-        axs[1,1].set_ylim(0,10)
-        axs[1,1].set_xlim(0,1)
+        # orginal wave
+        axs[0,1].plot(resamp_series, ff(resamp_series) , "b")
+        axs[0,2].plot(freq, Pow, "b")
+        axs[0,2].set_ylim(0,50)
+        # LF wave
+        axs[1,0].plot(resamp_series,  LFA , "b")
+        axs[1,1].plot(resamp_series, lf, "b")
+        #axs[1,1].set_ylim(0,10)
+        #axs[1,1].set_xlim(0,1)
+        axs[1,2].plot(freq, Pow_LF, "b")
         # 左下
-        axs[2,0].plot(resamp_series, output , "b")
-        axs[2,1].plot(freq, HFA, "b")
-        axs[2,1].set_ylim(0,10)
-        axs[2,1].set_xlim(0,1)
+        axs[2,0].plot(resamp_series,  HFA , "b")
+        axs[2,1].plot(resamp_series, hf, "b")
+        #axs[2,1].set_ylim(0,10)
+        #axs[2,1].set_xlim(0,1)
+        axs[2,2].plot(freq, Pow_HF, "b")
         # 右下
         # axs[1, 1].plot(LF_x,LF_y, "b")
+
+
+        ## 左上
+        #axs[0,0].plot(resamp_series, hfa , "b")
+        #axs[0,1].plot(freq, Pow, "b")
+        #axs[0,1].set_ylim(0,50)
+        ## 右上
+        #axs[1,0].plot(resamp_series,  LFA , "b")
+        
+        #axs[1,1].plot(freq,LF, "b")
+        #axs[1,1].set_ylim(0,10)
+        #axs[1,1].set_xlim(0,1)
+        ## 左下
+        #axs[2,0].plot(resamp_series, output , "b")
+        #axs[2,1].plot(freq, HFA, "b")
+        #axs[2,1].set_ylim(0,10)
+        #axs[2,1].set_xlim(0,1)
+        ## 右下
+        ## axs[1, 1].plot(LF_x,LF_y, "b")
 
 
         plt.show()
