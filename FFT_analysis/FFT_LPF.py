@@ -169,9 +169,9 @@ class PSD:
         
 
 
+        
 
-
-        fig, axs = plt.subplots(3, 3, figsize=(12, 8))
+        fig, axs = plt.subplots(3, 1, figsize=(12, 8))
         # 左上
         # orginal wave
         axs[0,1].plot(resamp_series, ff(resamp_series) , "b")
@@ -191,6 +191,27 @@ class PSD:
         axs[2,2].plot(freq, Pow_HF, "b")
         # 右下
         # axs[1, 1].plot(LF_x,LF_y, "b")
+
+        #fig, axs = plt.subplots(3, 3, figsize=(12, 8))
+        ## 左上
+        ## orginal wave
+        #axs[0,1].plot(resamp_series, ff(resamp_series) , "b")
+        #axs[0,2].plot(freq, Pow, "b")
+        #axs[0,2].set_ylim(0,50)
+        ## LF wave
+        #axs[1,0].plot(resamp_series,  LFA , "b")
+        #axs[1,1].plot(resamp_series, lf, "b")
+        ##axs[1,1].set_ylim(0,10)
+        ##axs[1,1].set_xlim(0,1)
+        #axs[1,2].plot(freq, Pow_LF, "b")
+        ## 左下
+        #axs[2,0].plot(resamp_series,  HFA , "b")
+        #axs[2,1].plot(resamp_series, hf, "b")
+        ##axs[2,1].set_ylim(0,10)
+        ##axs[2,1].set_xlim(0,1)
+        #axs[2,2].plot(freq, Pow_HF, "b")
+        ## 右下
+        ## axs[1, 1].plot(LF_x,LF_y, "b")
 
 
         ## 左上

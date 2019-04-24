@@ -7,16 +7,36 @@ Project("{888888A0-9F3D-457C-B088-3A5042F75D52}") = "Complex_demoduation", "Comp
 EndProject
 Project("{888888A0-9F3D-457C-B088-3A5042F75D52}") = "FFT_analysis", "FFT_analysis\FFT_analysis.pyproj", "{65D3EAC0-3015-45B0-A45F-4268AF5F5C57}"
 EndProject
+Project("{888888A0-9F3D-457C-B088-3A5042F75D52}") = "CANDISC", "CANDISC\CANDISC.pyproj", "{C9135C21-1693-4547-92DB-37574E88B1D0}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
+		Debug|x64 = Debug|x64
+		Debug|x86 = Debug|x86
 		Release|Any CPU = Release|Any CPU
+		Release|x64 = Release|x64
+		Release|x86 = Release|x86
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
 		{7D380A5B-BE9B-4AC9-B8F9-002D763D82BD}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{7D380A5B-BE9B-4AC9-B8F9-002D763D82BD}.Debug|x64.ActiveCfg = Debug|Any CPU
+		{7D380A5B-BE9B-4AC9-B8F9-002D763D82BD}.Debug|x86.ActiveCfg = Debug|Any CPU
 		{7D380A5B-BE9B-4AC9-B8F9-002D763D82BD}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{7D380A5B-BE9B-4AC9-B8F9-002D763D82BD}.Release|x64.ActiveCfg = Release|Any CPU
+		{7D380A5B-BE9B-4AC9-B8F9-002D763D82BD}.Release|x86.ActiveCfg = Release|Any CPU
 		{65D3EAC0-3015-45B0-A45F-4268AF5F5C57}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{65D3EAC0-3015-45B0-A45F-4268AF5F5C57}.Debug|x64.ActiveCfg = Debug|Any CPU
+		{65D3EAC0-3015-45B0-A45F-4268AF5F5C57}.Debug|x86.ActiveCfg = Debug|Any CPU
 		{65D3EAC0-3015-45B0-A45F-4268AF5F5C57}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{65D3EAC0-3015-45B0-A45F-4268AF5F5C57}.Release|x64.ActiveCfg = Release|Any CPU
+		{65D3EAC0-3015-45B0-A45F-4268AF5F5C57}.Release|x86.ActiveCfg = Release|Any CPU
+		{C9135C21-1693-4547-92DB-37574E88B1D0}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{C9135C21-1693-4547-92DB-37574E88B1D0}.Debug|x64.ActiveCfg = Debug|Any CPU
+		{C9135C21-1693-4547-92DB-37574E88B1D0}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{C9135C21-1693-4547-92DB-37574E88B1D0}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{C9135C21-1693-4547-92DB-37574E88B1D0}.Release|x64.ActiveCfg = Release|Any CPU
+		{C9135C21-1693-4547-92DB-37574E88B1D0}.Release|x86.ActiveCfg = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
