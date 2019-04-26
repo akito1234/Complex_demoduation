@@ -188,8 +188,9 @@ class PSD:
         ## 右下
         ## axs[1, 1].plot(LF_x,LF_y, "b")
 
-        
-        fig, axs = plt.subplots(2, 1,sharex=True ,figsize=(12, 8))
+
+
+        fig, axs = plt.subplots(3, 3, figsize=(12, 8))
         # 左上
         # LF wave
         axs[0].plot(resamp_series,  LFA*1000 , "b")
@@ -203,7 +204,7 @@ class PSD:
         plt.xlabel("Time[s]")
         # 右下
         # axs[1, 1].plot(LF_x,LF_y, "b")
-        
+
 
         #fig, axs = plt.subplots(3, 3, figsize=(12, 8))
         ## 左上
