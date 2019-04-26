@@ -7,6 +7,8 @@
 import numpy as np
 import matplotlib.pyplot as plt
 from sklearn.datasets.base import Bunch
+from scipy import signal,interpolate,integrate
+import math
 
 def bl_filt(y, half_width):
     """
@@ -19,6 +21,7 @@ def bl_filt(y, half_width):
     最終効果は、ゼロパディングではなく、多くのポイントの加重平均を
     計算することによって処理されます。
     """
+    
     nf = half_width * 2 + 1
     x = np.linspace(-1, 1, nf, endpoint=True)
     x = x[1:-1]   # chop off the useless endpoints with zero weight
@@ -26,6 +29,12 @@ def bl_filt(y, half_width):
     w = 0.42 + 0.5 * np.cos(x * np.pi) + 0.08 * np.cos(x * 2 * np.pi)
     ytop = np.convolve(y, w, mode='same')
     ybot = np.convolve(np.ones_like(y), w, mode='same')
+
+    #np.savetxt(r"C:\Users\akito\Desktop\Hashimoto\output.csv",            # ファイル名
+    #       X=(ytop / ybot).real,                  # 保存したい配列
+    #       delimiter=","            # 区切り文字
+    #       )
+ 
     return ytop / ybot
 
 def test_data(periods, 
@@ -119,7 +128,7 @@ def complex_demod(t, x, central_period, hwidth = 2):
     dt = t[1] - t[0]
     # 1周期に取れるデータ数
     hwpts = int(round(hwidth * abs(central_period) / dt))
-
+    
     # apply filter
     demod = bl_filt(product, hwpts)
 
@@ -150,6 +159,7 @@ def complex_demod(t, x, central_period, hwidth = 2):
 
 
 def plot_demod(dm):
+
     fig, axs = plt.subplots(3, sharex=True)
     resid = dm.signal - dm.reconstructed
     if dm.signal.dtype.kind == 'c':
@@ -158,9 +168,10 @@ def plot_demod(dm):
         axs[0].plot(dm.t, resid.real, label='difference real')
         axs[0].plot(dm.t, resid.imag, label='difference imag')
     else:    
-       # axs[0].plot(dm.t, dm.signal, label='signal')
-        axs[0].plot(dm.t, dm.reconstructed, label='reconstructed')
-       # axs[0].plot(dm.t, dm.signal - dm.reconstructed, label='difference')
+       axs[0].plot(dm.t, dm.signal, label='signal')
+       #axs[0].plot(dm.t, dm.reconstructed+np.average(dm.signal), label='reconstructed')
+       axs[0].plot(dm.t, dm.reconstructed, label='reconstructed')
+       #axs[0].plot(dm.t, dm.signal - dm.reconstructed, label='difference')
     
     axs[0].legend(loc='upper right', fontsize='small')
     
@@ -176,6 +187,47 @@ def plot_demod(dm):
         ax.locator_params(axis='y', nbins=5)
     return fig, axs    
 
+
+
+
+#RRIのリサンプリング
+def resamp_PPI(R_x,#心拍の山の時刻
+               resamp_frequency=4.0,#リサンプリング周波数
+               ):
+        
+        RRI=np.zeros(R_x.size-1)
+        RRI_time=np.zeros(R_x.size-1)
+        
+        #間隔[ms]を[s]に変換する
+        for i in range(R_x.size-1):
+            RRI[i]=(R_x[i+1]-R_x[i])*0.001
+            RRI_time[i]=R_x[i+1]*0.001
+
+
+        # 3 次スプライン補間
+        # RRI:山の時刻
+        # RRI_time : 時間軸
+        ff=interpolate.interp1d(RRI_time,RRI,kind='cubic')
+
+        #データ数
+        N = resamp_frequency * (np.max(RRI_time)-RRI_time[0])
+
+        resamp_series=np.linspace(RRI_time[0],#開始時刻
+                                  RRI_time[RRI_time.size-1],N
+                                  )
+
+        # 時間，RRI，fs(サンプリング周波数)
+        return resamp_series,ff(resamp_series)
+
+def main_dmod(R_x,
+              central_period,
+              resamp_frequency=2.0,
+              hwidth = 2):
+    t,x = resamp_PPI(R_x,resamp_frequency)
+    dm = complex_demod(t, x, central_period, hwidth=hwidth)
+    fig, axs = plot_demod(dm)
+    return fig, axs, dm
+ 
 def test_demod(periods, #周期(配列)
                central_period,
                noise=0,
@@ -190,7 +242,19 @@ def test_demod(periods, #周期(配列)
     dm = complex_demod(t, x, central_period, hwidth=hwidth)
     fig, axs = plot_demod(dm)
     return fig, axs, dm
+
 #12.0/24, 13.0/24, 14.5/24の3つの周期を選択
 #central_period(取り出す周期)は12.0/24.0
-test_demod([12.0/24, 13.0/24, 14.5/24], 13.0/24,noise=1);
+#test_demod([12.0/24, 20.0/24, 14.5/24], 12.0/24,noise=1);
+
+
+
+#LF :  0.04 ~ 0.15 Hz
+#HF :  0.15 ~ 0.40 Hz
+#central_period : 周期T
+R_x = np.loadtxt("test1.csv",delimiter=",")
+central_period = 1 / (0.15+0.04) *2
+main_dmod(R_x,central_period,resamp_frequency=4.0,hwidth=1.5)
+#plt.figure()
+#plt.plot(t,RRI)
 plt.show()

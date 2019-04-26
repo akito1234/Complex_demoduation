@@ -13,6 +13,8 @@ import matplotlib.pyplot as plt
 import pandas as pd
 from scipy import signal,interpolate,integrate
 import math
+
+
 class PSD:
     def resample(self,R_x,N):
         RRI=np.zeros(R_x.size-1)
@@ -166,50 +168,82 @@ class PSD:
         #plt.xlabel("Frequency[Hz]")
         #plt.ylabel("Power/frequency[dB/Hz]")
 
+
+        #fig, axs = plt.subplots(3, 1,sharex=True ,figsize=(12, 8))
+        ## 左上
+        ## orginal wave
+        #axs[0].plot(resamp_series, ff(resamp_series)*1000 , "b")
+        #axs[0].set_ylabel("RRI[ms]")
+        #axs[0].set_ylim(800,1400)
+        ## LF wave
+        #axs[1].plot(resamp_series,  lf*1000 , "b")
+        #axs[1].set_ylabel("LF[ms]")
+        #axs[1].set_ylim(-100,100)
         
+        ## 左下
+        #axs[2].plot(resamp_series,  hf*1000 , "b")
+        #axs[2].set_ylabel("HF[ms]")
+        #axs[2].set_ylim(-100,100)
+        #plt.xlabel("Time[s]")
+        ## 右下
+        ## axs[1, 1].plot(LF_x,LF_y, "b")
 
-
-
-
-        fig, axs = plt.subplots(3, 3, figsize=(12, 8))
+        
+        fig, axs = plt.subplots(2, 1,sharex=True ,figsize=(12, 8))
         # 左上
-        # orginal wave
-        axs[0,1].plot(resamp_series, ff(resamp_series) , "b")
-        axs[0,2].plot(freq, Pow, "b")
-        axs[0,2].set_ylim(0,50)
         # LF wave
-        axs[1,0].plot(resamp_series,  LFA , "b")
-        axs[1,1].plot(resamp_series, lf, "b")
-        #axs[1,1].set_ylim(0,10)
-        #axs[1,1].set_xlim(0,1)
-        axs[1,2].plot(freq, Pow_LF, "b")
+        axs[0].plot(resamp_series,  LFA*1000 , "b")
+        axs[0].set_ylabel("LFA[ms]")
+        axs[0].set_ylim(0,100)
+        
         # 左下
-        axs[2,0].plot(resamp_series,  HFA , "b")
-        axs[2,1].plot(resamp_series, hf, "b")
-        #axs[2,1].set_ylim(0,10)
-        #axs[2,1].set_xlim(0,1)
-        axs[2,2].plot(freq, Pow_HF, "b")
+        axs[1].plot(resamp_series,  HFA*1000 , "b")
+        axs[1].set_ylabel("HFA[ms]")
+        axs[1].set_ylim(0,100)
+        plt.xlabel("Time[s]")
         # 右下
         # axs[1, 1].plot(LF_x,LF_y, "b")
+        
 
-
+        #fig, axs = plt.subplots(3, 3, figsize=(12, 8))
         ## 左上
-        #axs[0,0].plot(resamp_series, hfa , "b")
+        ## orginal wave
+        #axs[0,1].plot(resamp_series, ff(resamp_series) , "b")
+        #axs[0,2].plot(freq, Pow, "b")
+        #axs[0,2].set_ylim(0,50)
+        ## LF wave
+        #axs[1,0].plot(resamp_series,  LFA , "b")
+        #axs[1,1].plot(resamp_series, lf, "b")
+        ##axs[1,1].set_ylim(0,10)
+        ##axs[1,1].set_xlim(0,1)
+        #axs[1,2].plot(freq, Pow_LF, "b")
+        ## 左下
+        #axs[2,0].plot(resamp_series,  HFA , "b")
+        #axs[2,1].plot(resamp_series, hf, "b")
+        ##axs[2,1].set_ylim(0,10)
+        ##axs[2,1].set_xlim(0,1)
+        #axs[2,2].plot(freq, Pow_HF, "b")
+        ## 右下
+        ## axs[1, 1].plot(LF_x,LF_y, "b")
+
+
+        # 左上
+        #axs[0,0].plot(resamp_series, hf , "b")
         #axs[0,1].plot(freq, Pow, "b")
         #axs[0,1].set_ylim(0,50)
-        ## 右上
-        #axs[1,0].plot(resamp_series,  LFA , "b")
+        # 右上
+        #axs[1,0].plot(resamp_series,  lf , "b")
         
         #axs[1,1].plot(freq,LF, "b")
         #axs[1,1].set_ylim(0,10)
         #axs[1,1].set_xlim(0,1)
-        ## 左下
-        #axs[2,0].plot(resamp_series, output , "b")
+        # 左下
+        #axs[2,0].plot(resamp_series, ff(resamp_series) , "b")
         #axs[2,1].plot(freq, HFA, "b")
         #axs[2,1].set_ylim(0,10)
         #axs[2,1].set_xlim(0,1)
-        ## 右下
-        ## axs[1, 1].plot(LF_x,LF_y, "b")
+        # 右下
+        # axs[1, 1].plot(LF_x,LF_y, "b")
 
 
         plt.show()
@@ -220,7 +254,7 @@ class PSD:
 R_x = np.loadtxt("test1.csv",delimiter=",")
 freq = PSD()
 #signal = freq.freq_PSD(R_x,R_x.size*512/120,0.15,0.15,0.4)
-signal = freq.freq_PSD(R_x[0:120], 512 ,0.15,0.15,0.4)
+signal = freq.freq_PSD(R_x[0:300], 512*300/120 ,0.15,0.15,0.4)
 #RRI算出
 
 #Freq=freq_PSD(R[1][start:Index],512,0.15,0.15,0.4)
