@@ -159,8 +159,9 @@ def complex_demod(t, x, central_period, hwidth = 2):
 
 
 def plot_demod(dm):
+    freq = np.linspace(0, 4.0, 1194)
 
-    fig, axs = plt.subplots(3, sharex=True)
+    fig, axs = plt.subplots(3, sharex=False)
     resid = dm.signal - dm.reconstructed
     if dm.signal.dtype.kind == 'c':
         axs[0].plot(dm.t, dm.signal.real, label='signal.real')
@@ -168,10 +169,14 @@ def plot_demod(dm):
         axs[0].plot(dm.t, resid.real, label='difference real')
         axs[0].plot(dm.t, resid.imag, label='difference imag')
     else:    
-       axs[0].plot(dm.t, dm.signal, label='signal')
-       #axs[0].plot(dm.t, dm.reconstructed+np.average(dm.signal), label='reconstructed')
-       axs[0].plot(dm.t, dm.reconstructed, label='reconstructed')
-       #axs[0].plot(dm.t, dm.signal - dm.reconstructed, label='difference')
+        #axs[0].plot(freq, function(dm.signal), label='signal')
+        #axs[0].plot(freq, function(dm.reconstructed), label='reconstructed')
+        #axs[0].set_xlim(0,1)
+        #axs[0].set_ylim(0,200)
+        axs[0].plot(dm.t, dm.signal, label='signal')
+        axs[0].plot(dm.t, dm.reconstructed+np.average(dm.signal), label='reconstructed')
+        axs[0].plot(dm.t, dm.reconstructed, label='reconstructed')
+        axs[0].plot(dm.t, dm.signal - dm.reconstructed, label='difference')
     
     axs[0].legend(loc='upper right', fontsize='small')
     
@@ -187,7 +192,15 @@ def plot_demod(dm):
         ax.locator_params(axis='y', nbins=5)
     return fig, axs    
 
-
+def function(signal):
+    F = np.fft.fft(signal)
+    ## 正規化 + 交流成分2倍
+    #F = F/(N/2)
+    #F[0] = F[0]/2
+    # 振幅スペクトルを計算
+    Amp = np.abs(F)
+    Power = Amp ** 2
+    return Power
 
 
 #RRIのリサンプリング
@@ -223,10 +236,11 @@ def main_dmod(R_x,
               central_period,
               resamp_frequency=2.0,
               hwidth = 2):
+
     t,x = resamp_PPI(R_x,resamp_frequency)
     dm = complex_demod(t, x, central_period, hwidth=hwidth)
     fig, axs = plot_demod(dm)
-    return fig, axs, dm
+    return fig, axs,dm
  
 def test_demod(periods, #周期(配列)
                central_period,
@@ -243,18 +257,25 @@ def test_demod(periods, #周期(配列)
     fig, axs = plot_demod(dm)
     return fig, axs, dm
 
+
+    
 #12.0/24, 13.0/24, 14.5/24の3つの周期を選択
 #central_period(取り出す周期)は12.0/24.0
 #test_demod([12.0/24, 20.0/24, 14.5/24], 12.0/24,noise=1);
-
-
 
 #LF :  0.04 ~ 0.15 Hz
 #HF :  0.15 ~ 0.40 Hz
 #central_period : 周期T
 R_x = np.loadtxt("test1.csv",delimiter=",")
-central_period = 1 / (0.15+0.04) *2
-main_dmod(R_x,central_period,resamp_frequency=4.0,hwidth=1.5)
+central_period = 1/(0.04+0.15) *2
+fig, axs,dm = main_dmod(R_x,central_period,resamp_frequency=4.0,hwidth=2.0)
+resamp_series,signaldsgd = resamp_PPI(R_x,#心拍の山の時刻
+               resamp_frequency=4.0,#リサンプリング周波数
+               )
+freq = np.linspace(0, 4.0, 1194)
+
 #plt.figure()
-#plt.plot(t,RRI)
+#plt.plot(freq,function(dm.signal))
+#plt.xlim(0,1)
+##plt.plot(t,RRI)
 plt.show()

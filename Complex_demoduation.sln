@@ -7,7 +7,7 @@ Project("{888888A0-9F3D-457C-B088-3A5042F75D52}") = "Complex_demoduation", "Comp
 EndProject
 Project("{888888A0-9F3D-457C-B088-3A5042F75D52}") = "FFT_analysis", "FFT_analysis\FFT_analysis.pyproj", "{65D3EAC0-3015-45B0-A45F-4268AF5F5C57}"
 EndProject
-Project("{888888A0-9F3D-457C-B088-3A5042F75D52}") = "CANDISC", "CANDISC\CANDISC.pyproj", "{C9135C21-1693-4547-92DB-37574E88B1D0}"
+Project("{888888A0-9F3D-457C-B088-3A5042F75D52}") = "RRI", "CANDISC\RRI.pyproj", "{C9135C21-1693-4547-92DB-37574E88B1D0}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
