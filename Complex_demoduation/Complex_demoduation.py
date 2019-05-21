@@ -179,9 +179,9 @@ def plot_demod(dm):
         #axs[0].set_xlim(0,1)
         #axs[0].set_ylim(0,200)
         axs[0].plot(dm.t, dm.signal, label='signal')
-        axs[0].plot(dm.t, dm.reconstructed+np.average(dm.signal), label='reconstructed')
+        #axs[0].plot(dm.t, dm.reconstructed+np.average(dm.signal), label='reconstructed')
         axs[0].plot(dm.t, dm.reconstructed, label='reconstructed')
-        axs[0].plot(dm.t, dm.signal - dm.reconstructed, label='difference')
+        #axs[0].plot(dm.t, dm.signal - dm.reconstructed, label='difference')
     
     axs[0].legend(loc='upper right', fontsize='small')
     
