@@ -21,15 +21,20 @@ def bl_filt(y, half_width):
     最終効果は、ゼロパディングではなく、多くのポイントの加重平均を
     計算することによって処理されます。
     """
-    
+
+    # 段階数
     nf = half_width * 2 + 1
     x = np.linspace(-1, 1, nf, endpoint=True)
     x = x[1:-1]   # chop off the useless endpoints with zero weight
     #-1と1を取り除く
     w = 0.42 + 0.5 * np.cos(x * np.pi) + 0.08 * np.cos(x * 2 * np.pi)
     ytop = np.convolve(y, w, mode='same')
+    
     ybot = np.convolve(np.ones_like(y), w, mode='same')
-
+    #np.savetxt(r"C:\Users\akito\Desktop\result2.csv",            # ファイル名
+    #           X=ybot.real,                  # 保存したい配列
+    #           delimiter=","            # 区切り文字
+    #)
     #np.savetxt(r"C:\Users\akito\Desktop\Hashimoto\output.csv",            # ファイル名
     #       X=(ytop / ybot).real,                  # 保存したい配列
     #       delimiter=","            # 区切り文字
@@ -290,7 +295,7 @@ def test_demod(periods, #周期(配列)
 #HF :  0.15 ~ 0.40 Hz
 #central_period : 周期T
 R_x = np.loadtxt("test1.csv",delimiter=",")
-central_period = 1/(0.04+0.15) *2
+central_period = 1/(0.40+0.15) *2
 fig, axs,dm = main_dmod(R_x,central_period,resamp_frequency=4.0,hwidth=2.0)
 resamp_series,signaldsgd = resamp_RRI(R_x,#心拍の山の時刻
                resamp_frequency=4.0,#リサンプリング周波数
