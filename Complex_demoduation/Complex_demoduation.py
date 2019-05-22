@@ -203,42 +203,65 @@ def function(signal):
     return Power
 
 
+##RRIのリサンプリング
+#def resamp_PPI(R_x,#心拍の山の時刻
+#               resamp_frequency=4.0,#リサンプリング周波数
+#               ):
+        
+#        RRI=np.zeros(R_x.size-1)
+#        RRI_time=np.zeros(R_x.size-1)
+        
+#        #間隔[ms]を[s]に変換する
+#        for i in range(R_x.size-1):
+#            RRI[i]=(R_x[i+1]-R_x[i])*0.001
+#            RRI_time[i]=R_x[i+1]*0.001
+
+
+#        # 3 次スプライン補間
+#        # RRI:山の時刻
+#        # RRI_time : 時間軸
+#        ff=interpolate.interp1d(RRI_time,RRI,kind='cubic')
+
+#        #データ数
+#        N = resamp_frequency * (np.max(RRI_time)-RRI_time[0])
+
+#        resamp_series=np.linspace(RRI_time[0],#開始時刻
+#                                  RRI_time[RRI_time.size-1],N
+#                                  )
+
+#        # 時間，RRI，fs(サンプリング周波数)
+#        return resamp_series,ff(resamp_series)
 #RRIのリサンプリング
-def resamp_PPI(R_x,#心拍の山の時刻
+def resamp_RRI(R_x,#心拍の山の時刻
                resamp_frequency=4.0,#リサンプリング周波数
                ):
-        
-        RRI=np.zeros(R_x.size-1)
-        RRI_time=np.zeros(R_x.size-1)
-        
-        #間隔[ms]を[s]に変換する
-        for i in range(R_x.size-1):
-            RRI[i]=(R_x[i+1]-R_x[i])*0.001
-            RRI_time[i]=R_x[i+1]*0.001
+        # 配列を初期化(差分を取るためn-1)
+        RRI=np.zeros((R_x.size-1, 2),dtype="int")
+        #RRI_time=RRI.copy()
 
+        # RRI時系列を作成　共に[ms]
+        for i in range(R_x.size - 1):
+            RRI[i,0]= R_x[i+1]
+            RRI[i,1]=(R_x[i+1] - R_x[i])
+            
+    
+        # RRI配列を3次スプラインで補完
+        RR_comp = interpolate.interp1d(RRI[:,0],RRI[:,1],kind='cubic')
 
-        # 3 次スプライン補間
-        # RRI:山の時刻
-        # RRI_time : 時間軸
-        ff=interpolate.interp1d(RRI_time,RRI,kind='cubic')
+        #標本数
+        N = resamp_frequency * (np.max(RRI[:,0])-RRI[0,0])
 
-        #データ数
-        N = resamp_frequency * (np.max(RRI_time)-RRI_time[0])
+        resamp_series  = np.linspace(RRI[0,0],np.max(RRI[:,0]),N)
 
-        resamp_series=np.linspace(RRI_time[0],#開始時刻
-                                  RRI_time[RRI_time.size-1],N
-                                  )
-
-        # 時間，RRI，fs(サンプリング周波数)
-        return resamp_series,ff(resamp_series)
+        return [resamp_series,RR_comp(resamp_series)]
 
 def main_dmod(R_x,
               central_period,
               resamp_frequency=2.0,
               hwidth = 2):
 
-    t,x = resamp_PPI(R_x,resamp_frequency)
-    dm = complex_demod(t, x, central_period, hwidth=hwidth)
+    RRI = resamp_RRI(R_x,resamp_frequency)
+    dm = complex_demod(RRI[0], RRI[1], central_period, hwidth=hwidth)
     fig, axs = plot_demod(dm)
     return fig, axs,dm
  
@@ -269,7 +292,7 @@ def test_demod(periods, #周期(配列)
 R_x = np.loadtxt("test1.csv",delimiter=",")
 central_period = 1/(0.04+0.15) *2
 fig, axs,dm = main_dmod(R_x,central_period,resamp_frequency=4.0,hwidth=2.0)
-resamp_series,signaldsgd = resamp_PPI(R_x,#心拍の山の時刻
+resamp_series,signaldsgd = resamp_RRI(R_x,#心拍の山の時刻
                resamp_frequency=4.0,#リサンプリング周波数
                )
 freq = np.linspace(0, 4.0, 1194)
