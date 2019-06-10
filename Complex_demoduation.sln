@@ -11,6 +11,8 @@ Project("{888888A0-9F3D-457C-B088-3A5042F75D52}") = "RRI", "CANDISC\RRI.pyproj",
 EndProject
 Project("{888888A0-9F3D-457C-B088-3A5042F75D52}") = "PSD", "PSD\PSD.pyproj", "{8B45A012-841A-48BE-8B26-29407C2222F2}"
 EndProject
+Project("{888888A0-9F3D-457C-B088-3A5042F75D52}") = "Bitalino", "Bitalino\Bitalino.pyproj", "{ED67A0DE-BEDA-4706-99A7-4FC4EF3AED54}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -45,6 +47,12 @@ Global
 		{8B45A012-841A-48BE-8B26-29407C2222F2}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{8B45A012-841A-48BE-8B26-29407C2222F2}.Release|x64.ActiveCfg = Release|Any CPU
 		{8B45A012-841A-48BE-8B26-29407C2222F2}.Release|x86.ActiveCfg = Release|Any CPU
+		{ED67A0DE-BEDA-4706-99A7-4FC4EF3AED54}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{ED67A0DE-BEDA-4706-99A7-4FC4EF3AED54}.Debug|x64.ActiveCfg = Debug|Any CPU
+		{ED67A0DE-BEDA-4706-99A7-4FC4EF3AED54}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{ED67A0DE-BEDA-4706-99A7-4FC4EF3AED54}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{ED67A0DE-BEDA-4706-99A7-4FC4EF3AED54}.Release|x64.ActiveCfg = Release|Any CPU
+		{ED67A0DE-BEDA-4706-99A7-4FC4EF3AED54}.Release|x86.ActiveCfg = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
